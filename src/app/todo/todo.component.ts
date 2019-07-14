@@ -8,17 +8,32 @@ import { Component, OnInit } from '@angular/core';
 export class TodoComponent implements OnInit {
 
   todoText: string = "";
-  todoList = [];
+  todoList: any = [];
+  isTodoListEmpty = false;
 
   constructor() { }
 
   ngOnInit() {
-
+    this.isTodoListEmpty=true;
   }
 
   onAddTodoText() {
+
     console.log("adding the todoText - ", this.todoText);
-    this.todoList.push(this.todoText);
+    let todoObj = {todoId: this.todoList.length, text: this.todoText, isCompleted: false, buttonText:"Done"};
+
+    this.todoList.push(todoObj);
     this.todoText = "";
+    this.isTodoListEmpty=false;
+  }
+
+  onCompletingTask(todoId:number){
+    if (this.todoList[todoId].isCompleted){
+      this.todoList[todoId].isCompleted = false;
+      this.todoList[todoId].buttonText = "Done";
+    }else{
+      this.todoList[todoId].isCompleted = true;
+      this.todoList[todoId].buttonText = "Undone";
+    }
   }
 }
