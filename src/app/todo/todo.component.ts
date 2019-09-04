@@ -18,13 +18,21 @@ export class TodoComponent implements OnInit {
   }
 
   onAddTodoText() {
+    if (this.todoText!=""){
+      console.log("adding the todoText - ", this.todoText);
+      let todoObj = {todoId: this.todoList.length, text: this.todoText, isCompleted: false, buttonText:"Done"};
 
-    console.log("adding the todoText - ", this.todoText);
-    let todoObj = {todoId: this.todoList.length, text: this.todoText, isCompleted: false, buttonText:"Done"};
-
-    this.todoList.push(todoObj);
-    this.todoText = "";
-    this.isTodoListEmpty=false;
+      this.todoList.push(todoObj);
+      this.todoText = "";
+      this.isTodoListEmpty=false;  
+    }
+  }
+  
+  onClearTodoText() {
+    console.log("clearing the todoList - ", this.todoList);
+    this.todoList=[];
+    this.todoText="";
+    this.isTodoListEmpty=true;
   }
 
   onCompletingTask(todoId:number){
