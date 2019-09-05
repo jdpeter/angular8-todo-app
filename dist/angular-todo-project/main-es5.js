@@ -41,7 +41,7 @@ module.exports = "<!--The content below is only a placeholder and can be replace
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"jumbotron jumbotron-fluid\">\n  <div class=\"container\">\n    <h1 class=\"display-4\">Angular 8 Todo App</h1>\n    <p class=\"lead\">A sample todo app built in Angular 8</p>\n  </div>\n</div>\n\n\n\n\n\n\n<div class=\"container\">\n  <div class=\"row justify-content-md-center\">\n    <div class=\"col-8 align-self-center\">\n      <input type=\"text\" name=\"todoText\" class=\"form-control\" [(ngModel)]=\"todoText\" (keyup.enter)=\"onAddTodoText()\" />\n    </div>\n    <div class=\"col-2\">\n      <button class=\"btn btn-sm btn-primary btn-block\" (click)=\"onAddTodoText()\">Add</button>\n    </div>\n  </div>\n  \n  <hr>\n\n\n  <div class=\"row\">\n    <div class=\"col\">\n      <div *ngIf=\"isTodoListEmpty\">\n        <p>List is empty!</p>\n      </div>\n      <div class=\"list-group\" *ngIf=\"!isTodoListEmpty\">\n        <a href=\"#\" class=\"list-group-item list-group-item-action\" *ngFor=\"let todo of todoList\">\n          <div class=\"d-flex w-100 justify-content-between\">\n            <h5 class=\"mb-1\" [ngClass]=\"todo.isCompleted ? 'strike':''\">{{todo.text}}</h5>\n            <button class=\"btn btn-sm btn-primary\" (click)=\"onCompletingTask(todo.todoId)\">{{todo.buttonText}}</button>\n          </div>\n        </a>\n      </div>\n    </div>\n  </div>"
+module.exports = "<div class=\"jumbotron jumbotron-fluid\">\n  <div class=\"container\">\n    <h1 class=\"display-4\">Angular 8 Todo App</h1>\n    <p class=\"lead\">A sample todo app built in Angular 8</p>\n  </div>\n</div>\n\n\n\n\n\n\n<div class=\"container\">\n  <div class=\"row justify-content-md-center\">\n    <div class=\"col-8 align-self-center\">\n      <input type=\"text\" name=\"todoText\" class=\"form-control\" [(ngModel)]=\"todoText\" (keyup.enter)=\"onAddTodoText()\" />\n    </div>\n    <div class=\"col-2\">\n      <button class=\"btn btn-sm btn-primary btn-block\" (click)=\"onAddTodoText()\">Add</button>\n      \n    </div>\n    <div class=\"col-2\">\n    <button class=\"btn btn-sm btn-primary btn-block\" (click)=\"onClearTodoText()\">Clear</button>\n    </div>\n  </div>\n  \n  <hr>\n\n\n  <div class=\"row\">\n    <div class=\"col\">\n      <div *ngIf=\"isTodoListEmpty\">\n        <p>List is empty!</p>\n      </div>\n      <div class=\"list-group\" *ngIf=\"!isTodoListEmpty\">\n        <a href=\"#\" class=\"list-group-item list-group-item-action\" *ngFor=\"let todo of todoList\">\n          <div class=\"d-flex w-100 justify-content-between\">\n            <h5 class=\"mb-1\" [ngClass]=\"todo.isCompleted ? 'strike':''\">{{todo.text}}</h5>\n            <button class=\"btn btn-sm btn-primary\" (click)=\"onCompletingTask(todo.todoId)\">{{todo.buttonText}}</button>\n          </div>\n        </a>\n      </div>\n    </div>\n  </div>"
 
 /***/ }),
 
@@ -169,11 +169,19 @@ var TodoComponent = /** @class */ (function () {
         this.isTodoListEmpty = true;
     };
     TodoComponent.prototype.onAddTodoText = function () {
-        console.log("adding the todoText - ", this.todoText);
-        var todoObj = { todoId: this.todoList.length, text: this.todoText, isCompleted: false, buttonText: "Done" };
-        this.todoList.push(todoObj);
+        if (this.todoText != "") {
+            console.log("adding the todoText - ", this.todoText);
+            var todoObj = { todoId: this.todoList.length, text: this.todoText, isCompleted: false, buttonText: "Done" };
+            this.todoList.push(todoObj);
+            this.todoText = "";
+            this.isTodoListEmpty = false;
+        }
+    };
+    TodoComponent.prototype.onClearTodoText = function () {
+        console.log("clearing the todoList - ", this.todoList);
+        this.todoList = [];
         this.todoText = "";
-        this.isTodoListEmpty = false;
+        this.isTodoListEmpty = true;
     };
     TodoComponent.prototype.onCompletingTask = function (todoId) {
         if (this.todoList[todoId].isCompleted) {
